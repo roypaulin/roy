@@ -26,7 +26,7 @@ public class Master {
         String host = (args.length < 1) ? null : args[0];
 
         FileReader f;
-        f = new FileReader("./makefiles/premier/Makefile");
+        f = new FileReader("./Master/makefiles/premier/Makefile");
 
         BufferedReader b;
         b = new BufferedReader(f);

@@ -7,7 +7,7 @@
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import static java.lang.Compiler.command;
+//import static java.lang.Compiler.command;
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.RemoteException;
@@ -24,7 +24,7 @@ public class Slave implements Task {
         
         Process p;
         try {
-            p = Runtime.getRuntime().exec(command);
+            p = Runtime.getRuntime().exec("cmd.exe /c" + command);
             p.waitFor();
             BufferedReader reader
                     = new BufferedReader(new InputStreamReader(p.getInputStream()));
