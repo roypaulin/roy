@@ -6,11 +6,12 @@
 
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
-//import static java.lang.Compiler.command;
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
-import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class Slave implements Task {
@@ -41,6 +42,26 @@ public class Slave implements Task {
         return output.toString();
     }
 
+    
+     public boolean writeBytes(byte[] b, String filename) {
+        
+        try {
+             FileOutputStream fos = new FileOutputStream(filename);
+             fos.write(b);
+             fos.close();
+        }
+        catch(FileNotFoundException ex)   {
+             System.out.println("FileNotFoundException : " + ex);
+        }
+        catch(IOException ioe)  {
+             System.out.println("IOException : " + ioe);
+        }
+        
+        return true;
+    }
+
+    
+    
     public static void main(String args[]) {
     
     

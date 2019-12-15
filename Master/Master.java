@@ -49,7 +49,13 @@ public class Master {
     
     }
     
+    if(complete){
     
+     System.out.println("All slaves bounded successfully.");
+    }else{
+     System.out.println("Couldn't bind all Slaves, exiting now...");
+    
+    }
     
     
     
