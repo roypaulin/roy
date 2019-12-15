@@ -42,19 +42,32 @@ public class Slave implements Task {
     }
 
     public static void main(String args[]) {
-
-        try {
-            Slave obj = new Slave();
-            Task stub = (Task) UnicastRemoteObject.exportObject(obj, 0);
-
-            // Bind the remote object's stub in the registry
-            Registry registry = LocateRegistry.getRegistry();
-            registry.bind("Task", stub);
-
-            System.err.println("Slave ready");
-        } catch (Exception e) {
-            System.err.println("Slave exception: " + e.toString());
-            e.printStackTrace();
+    
+    
+        if (args.length < 1 ) {
+         System.out.println("expected at least 1 argument Usage: java Slave <slave_id> (<registry_host>)");
         }
+        else {
+            //  ID to diferentiate different slaves in the registry
+            int id = Integer.parseInt(args[0]);
+            
+            String host = (args.length == 2) ? args[1] : null;
+        
+            try {
+                Slave obj = new Slave();
+                Task stub = (Task) UnicastRemoteObject.exportObject(obj, 0);
+
+                // Retrieves the remote Registry
+                Registry registry = LocateRegistry.getRegistry(host);
+                // Binds the Slave 
+                registry.rebind("slave" + id, stub);
+
+                System.err.println("Slave ready");
+            } catch (Exception e) {
+                System.err.println("Slave exception: " + e.toString());
+                e.printStackTrace();
+            }
+        }
+    
     }
 }
