@@ -31,6 +31,9 @@ public final class MakefileClass {
             this.commands = commands;
         }
         
+        public ArrayList<String> getPrerequisites() {
+            return prerequisites;
+        }
         public int getPrereqsSize() { return prerequisites.size(); }
         public int getCommandsSize() { return commands.size(); }
     };
@@ -147,5 +150,8 @@ public final class MakefileClass {
     
     public int getRulesSize() {
         return rules.size();
+    }
+    public ArrayList<Rule> getRules() {
+        return rules;
     }
 };
