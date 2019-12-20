@@ -1,6 +1,6 @@
 To compile:
 
-	javac -d . Master/Master.java Slave/Slave.java Slave/Task.java Master/MakefileStruct.java
+	javac -d . Master/Master.java Slave/Slave.java Slave/Task.java Master/MakefileClass.java
 Start Java RMI registry:
 
 	 rmiregistry <PortNumber>

@@ -25,7 +25,8 @@ public class Slave implements Task {
         
         Process p;
         try {
-            p = Runtime.getRuntime().exec("cmd.exe /c" + command);
+            p = Runtime.getRuntime().exec(new String[]{"bash","-c",command});
+              //p = Runtime.getRuntime().exec(new String[]{"bash","-c",command});
             p.waitFor();
             BufferedReader reader
                     = new BufferedReader(new InputStreamReader(p.getInputStream()));

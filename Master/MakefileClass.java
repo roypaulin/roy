@@ -14,29 +14,6 @@ import java.util.ArrayList;
 public final class MakefileClass {
 
 
- public class Rule {
-        String target;
-        ArrayList< String > prerequisites;
-        ArrayList< String > commands;
-        
-        public Rule(String target) {
-            prerequisites = new ArrayList<>();
-            commands = new ArrayList<>();
-            this.target = target;
-        }
-        
-        public Rule(String target, ArrayList<String> prerequisites, ArrayList<String> commands) {
-            this(target);
-            this.prerequisites = prerequisites;
-            this.commands = commands;
-        }
-        
-        public ArrayList<String> getPrerequisites() {
-            return prerequisites;
-        }
-        public int getPrereqsSize() { return prerequisites.size(); }
-        public int getCommandsSize() { return commands.size(); }
-    };
        
        //set of rules
         private ArrayList< Rule > rules;
@@ -109,6 +86,38 @@ public final class MakefileClass {
     
     
     
+    public void display() {
+        System.out.println("Printing makefile structure: (" + this.getRulesSize() + ")");
+        
+        for (int r=0; r < this.getRulesSize(); r++) {
+            // Print rule name
+            System.out.println("Rule #" + r + ": " + this.getRuleTarget(r));
+            
+            // Prints list of dependencies
+            ArrayList<String> pres = this.getRulePrerequisites(r);
+            if (pres.size()>0) {
+                System.out.print("Dependencies (" + pres.size() + ") : ");
+                for (int i = 0; i < pres.size(); i++) {
+                    System.out.print(pres.get(i) + ", ");
+                }
+                System.out.println();
+            }
+            
+            // Prints list of commands
+            ArrayList<String> coms = this.getRuleCommands(r);
+            System.out.println("Commands (" + coms.size() + ") : ");
+            for (int i = 0; i < coms.size(); i++) {
+                System.out.println("#" + i + ": " + coms.get(i));           
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
     public void addCommand(int index, String c) {
         rules.get(index).commands.add(c);
     }
@@ -132,8 +141,9 @@ public final class MakefileClass {
         return rules.get(index).commands;
     }
     
-    public ArrayList<String> getRulePrerequisites(int index) {
-        return rules.get(index).prerequisites;
+    public ArrayList<String> getRulePrerequisites(int index) { 
+       System.out.println(rules.get(index).getPrerequisites());
+        return rules.get(index).getPrerequisites();
     }
     
      public void addPrerequisite(int index, String d) {
