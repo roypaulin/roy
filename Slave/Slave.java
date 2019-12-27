@@ -61,10 +61,7 @@ public class Slave implements Task {
         return true;
     }
 
-    public static void receiveFile(String path) {
-        
-    }
-    
+  
     public static void main(String args[]) {
     
     
