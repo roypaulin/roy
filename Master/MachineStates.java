@@ -17,17 +17,17 @@ public Machine[] machines;
 
 MachineStates(Machine m){
 
-     this.machine=m;
+     this.machines=m;
 }
 
 
 synchronized public int getAvailableMachine() {
         //get a free machine
-        for (int i = 0; i < machine.length; i++) {
-            if (machine[i].isAvailable) {
-                machine[i].isAvailable = false;
+        for (int i = 0; i < machines.length; i++) {
+            if (machines[i].isAvailable) {
+                machines[i].isAvailable = false;
                 //return the free machine index
-                return i;
+                return i; 
             }                    
         }
 
@@ -36,11 +36,11 @@ synchronized public int getAvailableMachine() {
 
 
   synchronized public boolean getState(int i) {
-        return machine[i].isAvailable;
+        return machines[i].isAvailable;
     }
     
     
      synchronized public void setFree(int i) {
-        machine[i].isAvailable = true;
+        machines[i].isAvailable = true;
     }
 }
