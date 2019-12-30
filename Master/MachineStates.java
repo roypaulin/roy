@@ -1,5 +1,5 @@
 import java.rmi.RemoteException;
-
+import java.util.ArrayList;
 
 
 
@@ -12,35 +12,35 @@ public class MachineStates {
 
 
 
-public Machine[] machines;
+public ArrayList<Machine> machines;
 
 
-MachineStates(Machine m){
+MachineStates(ArrayList<Machine> m){
 
-     this.machines=m;
+     this.machines=new ArrayList<Machine>(m);
 }
 
 
 synchronized public int getAvailableMachine() {
         //get a free machine
-        for (int i = 0; i < machines.length; i++) {
-            if (machines[i].isAvailable) {
-                machines[i].isAvailable = false;
+        for (int i = 0; i < machines.size(); i++) {
+            if (machines.get(i).isAvailable) {
+                machines.get(i).isAvailable = false;
                 //return the free machine index
                 return i; 
             }                    
         }
 
-         return -1 //couldn't find a free one
+         return -1; //couldn't find a free one
 }
 
 
   synchronized public boolean getState(int i) {
-        return machines[i].isAvailable;
+        return machines.get(i).isAvailable;
     }
     
     
      synchronized public void setFree(int i) {
-        machines[i].isAvailable = true;
+        machines.get(i).isAvailable = true;
     }
 }

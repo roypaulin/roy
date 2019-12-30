@@ -55,39 +55,17 @@ public class Master {
     }
     
     
-    private static void execMakefile(MakefileClass m, ArrayList<Task> stubs) throws RemoteException{
+    private static void execMakefile(MakefileClass m, MachineStates ms) throws RemoteException{
     
-     ArrayList<Rule> rules = m.getRules();
-   // System.out.println(rules);
-    //Execute rules from bottom to top
-    for(int i=m.getRulesSize()-1;i>0;i--){
+     RuleThread mainThread = new RuleThread(0,ms,m);
+     mainThread.start();
     
-    ArrayList<String> pre = rules.get(i).getPrerequisites();
-    System.out.println(pre);
-    for(String p : pre){
-       //send file from prerequisites
-       System.out.println("Sending file " + p);
-                stubs.get(0).writeBytes(fileToBytes(p), p);
-           // stubs[0].receiveFile(p);
-        }
-        
-        // Sends the rule's commands to the slave
-         ArrayList<String> commands= m.getRuleCommands(i);
-         System.out.println(commands);
-         for(String c : commands){
-         
-          System.out.println(c);
-                        String response = stubs.get(0).doTask(c);
-                        System.out.println(response);
-                    }
-        
-    }
     
     }
     public static void main(String[] args) throws FileNotFoundException, IOException {
     
     boolean complete=true;
-    ArrayList<Task> stubs=new ArrayList<Task>();
+    ArrayList<Machine> machines=new ArrayList<Machine>();
     if (args.length < 1) {
             System.out.println("expected at least 1 argument Usage: java Master <#slaves> (<registry_host>)");
         }
@@ -96,12 +74,15 @@ public class Master {
          String host = (args.length == 2) ? args[1] : null;
          
          // Retrieves the Registry and the slaves
+         //Machine machines[] = new Machine[slaves];
             Registry registry = LocateRegistry.getRegistry(host);
            // stubs = new Task[slaves];
             
              for (int i = 0; i < slaves; i++) {
                 try {
-                    stubs.add((Task) registry.lookup("slave" + i));
+                  machines.add(new Machine());
+                  machines.get(i).setTask((Task) registry.lookup("slave" + i));
+                   // stubs.add((Task) registry.lookup("slave" + i));
                 } catch (NotBoundException e) {
                     System.err.println
                     ("Slave " + i + " not bound.\n");
@@ -113,12 +94,13 @@ public class Master {
     }
     
     if(complete){
-    
+   
      System.out.println("All slaves bounded successfully.");
-     MakefileClass m = new MakefileClass("./Master/makefiles/premier/Makefile");
+     MachineStates ms =new MachineStates(machines);
+     MakefileClass m = new MakefileClass("./Master/Makefile");
      m.display();
     // ArrayList<Rule> rules = m.getRules();
-    execMakefile(m,stubs);
+    execMakefile(m,ms);
      
     }else{
     

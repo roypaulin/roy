@@ -43,7 +43,7 @@ public class Machine {
     
     }
     
-    public boolean writeBytes(String filename){
+    public boolean writeBytes(String filename) throws RemoteException{
     
         return t.writeBytes(fileToBytes(filename), filename);
     }
