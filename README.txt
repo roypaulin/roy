@@ -1,14 +1,14 @@
 To compile:
 
-	javac -d . Master/Master.java Slave/Slave.java Slave/Task.java Master/MakefileClass.java
+	javac -d . `cat src_files`
 Start Java RMI registry:
 
-	 rmiregistry <PortNumber>
+	 rmiregistry&
 
 Start the Slave:
 
-	java Slave
+	java Slave <slave_id> [<registry_host_addres>]
 
 Start the Master:
 
-	java   Master
+	java Master <number_of_slaves> [<registry_host_addres>]
