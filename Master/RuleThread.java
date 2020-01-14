@@ -8,11 +8,11 @@ class RuleThread extends Thread {
       
       MakefileClass m;
       MachineStates machines;
-      int ruleId;
+      String  target;
 
 
-RuleThread(int ruleId, MachineStates machines, MakefileClass m){
-       this.ruleId = ruleId;
+RuleThread(String target, MachineStates machines, MakefileClass m){
+       this.target = target;
       this.m = m;      
       this.machines = machines;
 }
@@ -21,8 +21,8 @@ RuleThread(int ruleId, MachineStates machines, MakefileClass m){
 @Override
 public void run(){
 
-Rule r = m.getRules().get(ruleId);
-       
+Rule r = m.getRules().get(target);
+ Rule ru;      
        System.out.println("Starting RuleThread for rule : " + r.target);
 
 
@@ -32,7 +32,7 @@ try {
            //to do...
        }
 
-       int index=ruleId+1;
+     
 ArrayList<String> prerequisites = r.getPrerequisites();
 
 //check for dependencies and run a thread for each dependencie
@@ -42,11 +42,17 @@ RuleThread preThreads[]= new RuleThread[prerequisites.size()];
 
 //a new thread for each dependecy
 for (int i = 0; i < prerequisites.size(); i++) {
-               preThreads[i] = new RuleThread(index++, machines, m);
-               preThreads[i].start();               
+         // ru= m.getRules().stream().filter(rule->rule.getTarget().equals(prerequisites.get(i))).findAny();
+          ru=m.getRules().get(prerequisites.get(i));
+          //synchronised function for mutual exclusion over the same dipendency
+            if(ru.getState()==1){
+         
+               preThreads[i] = new RuleThread(prerequisites.get(i), machines, m);
+               preThreads[i].start();   
+               }
            }
            
-    //TO BE CONTINUED 
+    //Synchronisation 
      for (RuleThread preThread : preThreads) {
                try {
                    preThread.join();
@@ -56,7 +62,7 @@ for (int i = 0; i < prerequisites.size(); i++) {
            }
 }
 
- ArrayList<String> commands = m.getRuleCommands(ruleId);
+ ArrayList<String> commands = m.getRuleCommands(target);
   for(String c : commands){
   String response = null;
   try{
@@ -67,7 +73,7 @@ for (int i = 0; i < prerequisites.size(); i++) {
      if(freeMachineIndex != -1) break;
   }
   
-  //send commands
+  //send commands to slave
   System.out.println("Sending to the slave the command " + c);
    Machine machine = machines.machines.get(freeMachineIndex);
     response = machine.doTask(c);
@@ -79,5 +85,6 @@ for (int i = 0; i < prerequisites.size(); i++) {
   }
   System.out.println(response);
   }
+  r.state=2;
 }
 }

@@ -3,7 +3,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.Map;
+import java.util.HashMap;
 /*
  * this class represent the implementation of a Makefile structure
  * which is composed of a set of rules.
@@ -16,10 +17,13 @@ public final class MakefileClass {
 
        
        //set of rules
-        private ArrayList< Rule > rules;
-        
+       // private ArrayList< Rule > rules;
+        private Map< String,Rule > rules;
+        public String rootName;
+         private static String currentRule;
+        //public boolean found;
         public MakefileClass() { 
-        rules = new ArrayList<>();
+      rules= new HashMap<>();
     }
     
     
@@ -30,10 +34,11 @@ public final class MakefileClass {
         
         FileReader f = new FileReader(path);
         BufferedReader b = new BufferedReader(f);
-        
+        boolean found=false;
         // Reads the file line by line  
         String s;
         int index=-1;
+        //String currentRule;
         while (true) {    
          
             if ((s = b.readLine()) == null)
@@ -49,9 +54,9 @@ public final class MakefileClass {
                     
                     //System.out.println("got a rule with dependencies:\nrule: " + tokens[0]);
                     String target = parts[0];
-
+                     currentRule=target;
                     // Split prerequisites
-                    String prerequisites[] = parts[1].split("[ ]+");
+                    String[] prerequisites = parts[1].split("[ ]+");
                     ArrayList<String> prerequisite = new ArrayList<>();
                     for (String p : prerequisites) {
                         if (p.length() > 0) {
@@ -60,18 +65,23 @@ public final class MakefileClass {
                     }
                     
                      this.insertRule(target, prerequisite);
+                     if(!found){
+                     rootName=target;
+                     found=true;
+                     }
                 }
                 else {
                     // CASE: this line is a command
                     if (s.charAt(0)=='\t') {
                         //System.out.println("got command:\n" + s);
-                        addCommand(index, s);
+                        addCommand(currentRule, s);
                     }
                     // CASE: this line is a rule with no dependencies at all
                     else {
                         //System.out.println("got a rule with no dependencies:\n" + s);
-                        index++;
-                        this.addRule(s);
+                        //index++;
+                        currentRule=parts[0];
+                        this.addRule(currentRule);
                     }
                 }
 
@@ -89,12 +99,14 @@ public final class MakefileClass {
     public void display() {
         System.out.println("Printing makefile structure: (" + this.getRulesSize() + ")");
         
-        for (int r=0; r < this.getRulesSize(); r++) {
+        //for (int r=0; r < this.getRulesSize(); r++) {
+        int r=0;
+        for(String target : this.getRules().keySet()){
             // Print rule name
-            System.out.println("Rule #" + r + ": " + this.getRuleTarget(r));
+            System.out.println("Rule #" + r + ": " + target);
             
             // Prints list of dependencies
-            ArrayList<String> pres = this.getRulePrerequisites(r);
+            ArrayList<String> pres = this.getRulePrerequisites(target);
             if (pres.size()>0) {
                 System.out.print("Dependencies (" + pres.size() + ") : ");
                 for (int i = 0; i < pres.size(); i++) {
@@ -104,11 +116,12 @@ public final class MakefileClass {
             }
             
             // Prints list of commands
-            ArrayList<String> coms = this.getRuleCommands(r);
+            ArrayList<String> coms = this.getRuleCommands(target);
             System.out.println("Commands (" + coms.size() + ") : ");
             for (int i = 0; i < coms.size(); i++) {
                 System.out.println("#" + i + ": " + coms.get(i));           
             }
+            r++;
         }
     }
     
@@ -118,50 +131,50 @@ public final class MakefileClass {
     
     
     
-    public void addCommand(int index, String c) {
-        rules.get(index).commands.add(c);
+    public void addCommand(String rule, String c) {
+        rules.get(rule).commands.add(c);
     }
     public void addRule(String name) {
-        rules.add(new Rule(name));
+        rules.put(name,new Rule(name));
     }
     
     public void addRule(String name, ArrayList<String> dependencies, ArrayList<String> commands) {
-        rules.add(new Rule(name, dependencies, commands));
+        rules.put(name,new Rule(name, dependencies, commands));
      }
      
          public void insertRule(String name, ArrayList<String> dependencies) {
-        rules.add(new Rule(name, dependencies, new ArrayList<String>()));
+        rules.put(name,new Rule(name, dependencies, new ArrayList<String>()));
     }
     
-     public String getRuleTarget(int index) {
-        return rules.get(index).target;
+     public String getRuleTarget(String rule) {
+        return rules.get(rule).target;
     }
     
-    public ArrayList<String> getRuleCommands(int index) {
-        return rules.get(index).commands;
+    public ArrayList<String> getRuleCommands(String rule) {
+        return rules.get(rule).commands;
     }
     
-    public ArrayList<String> getRulePrerequisites(int index) { 
-       System.out.println(rules.get(index).getPrerequisites());
-        return rules.get(index).getPrerequisites();
+    public ArrayList<String> getRulePrerequisites(String rule) { 
+       //System.out.println(rules.get(rule).getPrerequisites());
+        return rules.get(rule).getPrerequisites();
     }
     
-     public void addPrerequisite(int index, String d) {
-        rules.get(index).prerequisites.add(d);
+     public void addPrerequisite(String rule, String d) {
+        rules.get(rule).prerequisites.add(d);
     }
     
-    public void setCommands(int index, ArrayList<String> commands) {
-        rules.get(index).commands = commands;
+    public void setCommands(String rule, ArrayList<String> commands) {
+        rules.get(rule).setCommands(commands);
     }
     
-    public void setPrerequisites(int index, ArrayList<String> prerequisites) {
-        rules.get(index).prerequisites = prerequisites;
+    public void setPrerequisites(String rule, ArrayList<String> prerequisites) {
+        rules.get(rule).setPrerequisites(prerequisites);
     }
     
     public int getRulesSize() {
         return rules.size();
     }
-    public ArrayList<Rule> getRules() {
+  public Map<String,Rule> getRules() {
         return rules;
     }
 };

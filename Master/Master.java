@@ -57,13 +57,13 @@ public class Master {
     
     private static void execMakefile(MakefileClass m, MachineStates ms) throws RemoteException{
     
-     RuleThread mainThread = new RuleThread(0,ms,m);
+     RuleThread mainThread = new RuleThread(m.rootName,ms,m);
      mainThread.start();
     
     
     }
     public static void main(String[] args) throws FileNotFoundException, IOException {
-    
+    long startTime = System.currentTimeMillis();
     boolean complete=true;
     ArrayList<Machine> machines=new ArrayList<Machine>();
     if (args.length < 1) {
@@ -109,8 +109,8 @@ public class Master {
     }
     
     
-    
-
+    long endTime = System.currentTimeMillis();
+    System.out.println("Execution time : " + (endTime - startTime) + " milliseconds");
       
     }
 }
