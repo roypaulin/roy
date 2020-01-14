@@ -1,8 +1,8 @@
 Master/Master.java
 Slave/Slave.java
-Slave/SlaveStub.java
-Master/MakefileStruct.java
+Slave/Task.java
+Master/MakefileClass.java
 Master/Rule.java
-Master/RuleRunner.java
+Master/RuleThread.java
 Master/Machine.java
-Master/MachinesList.java
+Master/MachineStates.java
