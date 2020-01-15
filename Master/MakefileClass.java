@@ -56,7 +56,7 @@ public final class MakefileClass {
                     String target = parts[0];
                      currentRule=target;
                     // Split prerequisites
-                    String[] prerequisites = parts[1].split("[ ]+");
+                    String[] prerequisites = parts[1].split("\t|[ ]+");
                     ArrayList<String> prerequisite = new ArrayList<>();
                     for (String p : prerequisites) {
                         if (p.length() > 0) {
@@ -74,7 +74,7 @@ public final class MakefileClass {
                     // CASE: this line is a command
                     if (s.charAt(0)=='\t') {
                         //System.out.println("got command:\n" + s);
-                        addCommand(currentRule, s);
+                        addCommand(currentRule, s.substring(1));
                     }
                     // CASE: this line is a rule with no dependencies at all
                     else {

@@ -44,6 +44,10 @@ RuleThread preThreads[]= new RuleThread[prerequisites.size()];
 for (int i = 0; i < prerequisites.size(); i++) {
          // ru= m.getRules().stream().filter(rule->rule.getTarget().equals(prerequisites.get(i))).findAny();
           ru=m.getRules().get(prerequisites.get(i));
+           // System.out.println("prerequisites.get(i) -> "+prerequisites.get(i));
+           // System.out.println("prerequisites.get(i+1) -> "+prerequisites.get(i+1));
+           // System.out.println("m.getRules() -> "+m.getRules());
+         // System.out.println("object ru->"+ru);
           //synchronised function for mutual exclusion over the same dipendency
             if(ru.getState()==1){
          
