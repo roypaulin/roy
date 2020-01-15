@@ -1,7 +1,6 @@
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 
 class RuleThread extends Thread {
@@ -30,6 +29,7 @@ try {
            Thread.currentThread().sleep(1000);
        } catch (InterruptedException ex) {
            //to do...
+           ex.printStackTrace();
        }
 
      
@@ -57,33 +57,58 @@ for (int i = 0; i < prerequisites.size(); i++) {
                try {
                    preThread.join();
                }catch (InterruptedException ex) {
-                  // Logger.getLogger(RuleThread.class.getName()).log(Level.SEVERE, null, ex);
+                 ex.printStackTrace();
                }
            }
 }
 
  ArrayList<String> commands = m.getRuleCommands(target);
+ if(commands.size()>0){
+ //search a free machine
+  int freeMachineIndex=-1;
+   Machine machine=new Machine();
+  while(true){
+     machine= machines.getAvailableMachine();
+     if(machine != null) break;
+  }
+  // Machine machine = machines.freeMachines.get(freeMachineIndex);
+   // send the files to the slave if the are any 
+           
+            for (String pre : prerequisites) {
+                try {
+                    machine.writeBytes(pre);
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            
   for(String c : commands){
   String response = null;
   try{
-  //search a free machine
-  int freeMachineIndex=-1;
-  while(true){
-     freeMachineIndex= machines.getAvailableMachine();
-     if(freeMachineIndex != -1) break;
-  }
+  
   
   //send commands to slave
   System.out.println("Sending to the slave the command " + c);
-   Machine machine = machines.machines.get(freeMachineIndex);
+  
     response = machine.doTask(c);
     
     //free the machine
-    machines.setFree(freeMachineIndex);
+    machines.setFree(machine);
   }catch(RemoteException ex){
      //to do
+      ex.printStackTrace();
   }
   System.out.println(response);
+  
+  
+  }
+   // Retrieve the file resulting from the slave task.
+            
+            try {
+               machine.receiveFromSlave(this.target);
+            } catch (RemoteException ex) {
+               ex.printStackTrace();
+            }
   }
   r.state=2;
 }

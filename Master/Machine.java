@@ -3,7 +3,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.RemoteException;
-
+import java.io.FileOutputStream;
 
 
 
@@ -11,11 +11,11 @@ import java.rmi.RemoteException;
 public class Machine {
 
 
-   public boolean isAvailable;
+  
    public Task t;
 
  Machine() {
-        isAvailable = true;
+        //isAvailable = true;
     }
  public void setTask(Task t) {
         this.t = t;
@@ -46,6 +46,28 @@ public class Machine {
     public boolean writeBytes(String filename) throws RemoteException{
     
         return t.writeBytes(fileToBytes(filename), filename);
+    }
+    public boolean receiveFromSlave (String filename) throws RemoteException{
+    
+    byte b[] = fileToBytes(filename);
+    
+       if (b==null)
+            return false;
+        
+        try {
+             FileOutputStream fos = new FileOutputStream(filename);
+             fos.write(b);
+             fos.close();
+        }
+        catch(IOException ioe)  {
+           
+            return false;
+        }
+        
+        return true;
+    
+    
+    
     }
     
     String doTask(String command) throws RemoteException {
