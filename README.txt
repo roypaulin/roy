@@ -19,8 +19,16 @@ Connect to grid5000 :
 
 Réservation de x noeuds en mode interactif :
 
-	oarsh -l nodes=x -I
+	oarsub -l nodes=x -I
 
 Réservation de x noeuds avec lancement d'une commande au démarrage :
 
 	oarsh -l nodes=x "./cmd.sh arg1 arg2"
+
+Changement de node au cours d'une réservation :
+
+    oarsh node
+    
+Pour connaitre le nom des noeuds réservés :
+
+    uniq $OAR_NODEFILE
