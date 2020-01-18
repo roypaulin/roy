@@ -7,11 +7,15 @@ Start Java RMI registry:
 
 Start the Slave:
 
-	java Slave <slave_id> [<registry_host_addres>]
+	java Slave <slave_id> <registry_host_addres>
 
 Start the Master:
 
-	java Master <number_of_slaves> [<registry_host_addres>]
+	java Master <registry_host_addres>
+	
+Launch the make (can be executed on a different machine than the master) :
+
+    java Client <registry_host_addres>
 
 Connect to grid5000 :
 
@@ -32,3 +36,7 @@ Changement de node au cours d'une réservation :
 Pour connaitre le nom des noeuds réservés :
 
     uniq $OAR_NODEFILE
+    
+Pour connaitre l'IP d'une machine :
+
+    hostname -I
