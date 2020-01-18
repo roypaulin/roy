@@ -12,3 +12,23 @@ Start the Slave:
 Start the Master:
 
 	java Master <number_of_slaves> [<registry_host_addres>]
+
+Connect to grid5000 :
+
+	ssh login@access.grid5000.fr
+
+Réservation de x noeuds en mode interactif :
+
+	oarsub -l nodes=x -I
+
+Réservation de x noeuds avec lancement d'une commande au démarrage :
+
+	oarsh -l nodes=x "./cmd.sh arg1 arg2"
+
+Changement de node au cours d'une réservation :
+
+    oarsh node
+    
+Pour connaitre le nom des noeuds réservés :
+
+    uniq $OAR_NODEFILE
