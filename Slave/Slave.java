@@ -10,6 +10,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.rmi.Naming;
+import java.rmi.Remote;
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
@@ -71,7 +73,7 @@ public class Slave implements Task {
         else {
             //  ID to diferentiate different slaves in the registry
             int id = Integer.parseInt(args[0]);
-            
+            System.out.println(args.length);
             String host = (args.length == 2) ? args[1] : null;
         
             try {
@@ -79,9 +81,9 @@ public class Slave implements Task {
                 Task stub = (Task) UnicastRemoteObject.exportObject(obj, 0);
 
                 // Retrieves the remote Registry
-                Registry registry = LocateRegistry.getRegistry(host);
-                // Binds the Slave 
-                registry.rebind("slave" + id, stub);
+                Remote r = Naming.lookup("rmi://"+host+"/Master");
+                // Binds the Slave
+                ((MasterInt) r).register(stub, id);
 
                 System.err.println("Slave ready");
             } catch (Exception e) {

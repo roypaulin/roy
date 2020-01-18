@@ -6,3 +6,6 @@ Master/Rule.java
 Master/RuleThread.java
 Master/Machine.java
 Master/MachineStates.java
+Master/LaunchMaster.java
+Master/Client.java
+Master/MasterInt.java

@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 //import Master.*;
 
-public class Master extends UnicastRemoteObject {
+public class Master extends UnicastRemoteObject implements  MasterInt {
 
     ArrayList<Machine> machines;
     public Master() throws RemoteException {
@@ -73,7 +73,7 @@ public class Master extends UnicastRemoteObject {
         machines.add(new Machine());
     }
 
-    public void make() throws IOException {
+    public void make(String host) throws IOException {
         // Retrieves the Registry and the slaves
         //Machine machines[] = new Machine[slaves];
         boolean complete=true;
