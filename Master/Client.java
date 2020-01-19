@@ -12,10 +12,7 @@ public class Client {
             String host = args[0];
             Remote r = Naming.lookup("rmi://"+ host + "/Master");
             MasterInt master = (MasterInt) r;
-            long startTime = System.currentTimeMillis();
             master.make(host);
-            long endTime = System.currentTimeMillis();
-            System.out.println("Execution time : " + (endTime - startTime) + " milliseconds");
         } catch (NotBoundException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {

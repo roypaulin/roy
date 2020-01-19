@@ -73,7 +73,6 @@ public class Slave implements Task {
         else {
             //  ID to diferentiate different slaves in the registry
             int id = Integer.parseInt(args[0]);
-            System.out.println(args.length);
             String host = (args.length == 2) ? args[1] : null;
         
             try {

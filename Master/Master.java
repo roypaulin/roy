@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 public class Master extends UnicastRemoteObject implements  MasterInt {
 
     ArrayList<Machine> machines;
+    long startTime;
     public Master() throws RemoteException {
         super();
         machines=new ArrayList<Machine>();
@@ -59,12 +60,17 @@ public class Master extends UnicastRemoteObject implements  MasterInt {
     }
     
     
-    private static void execMakefile(MakefileClass m, MachineStates ms) throws RemoteException{
+    private void execMakefile(MakefileClass m, MachineStates ms) throws RemoteException{
     
-     RuleThread mainThread = new RuleThread(m.rootName,ms,m);
+     RuleThread mainThread = new RuleThread(m.rootName,ms,m, this);
      mainThread.start();
     
     
+    }
+
+    public void endOfMake(String target) {
+        long endTime = System.currentTimeMillis();
+        System.out.println("Execution time of target " + target + " : " + (endTime - startTime) + " milliseconds");
     }
 
     public void register(Task slave, int id) throws RemoteException {
@@ -93,12 +99,13 @@ public class Master extends UnicastRemoteObject implements  MasterInt {
         }
         if(complete){
             System.out.println("All slaves bounded successfully.");
+            System.out.println("Start make");
+            startTime = System.currentTimeMillis();
             MachineStates ms =new MachineStates(machines);
             MakefileClass m = new MakefileClass("./Makefile");
             m.display();
             // ArrayList<Rule> rules = m.getRules();
             execMakefile(m,ms);
-
         }else{
 
             System.out.println("Couldn't bind all Slaves");
