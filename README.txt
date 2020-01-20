@@ -1,6 +1,7 @@
 To compile:
 
 	javac -d . `cat src_files`
+	
 Start Java RMI registry:
 
 	 rmiregistry&
@@ -11,7 +12,7 @@ Start the Slave:
 
 Start the Master:
 
-	java Master <registry_host_addres>
+	java LaunchMaster <master_ip>
 	
 Launch the make (can be executed on a different machine than the master) :
 
