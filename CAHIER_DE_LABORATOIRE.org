@@ -81,8 +81,11 @@ T_{1}=467280 sur un noeud taurus.
 Commit 70e1c650383a0e671b24f76c7c4519c5157c9365, 20 janvier
 
 T_{dis}=118989
+
 A=6.76
+
 E=0.10
+
 T_{1} = 805416ms
 
 * Fabrication des courbes de performances
