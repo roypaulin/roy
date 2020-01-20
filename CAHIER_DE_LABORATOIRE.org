@@ -46,17 +46,21 @@ Makefile : **premier/Makefile**
 
 T_{dis}=209747ms
 
-T1 = 805416ms sur un noeud taurus.
+T_{1} = 805416ms sur un noeud taurus.
 On a donc : A = 3.84
 E = 0.059
 
 ** Expérimentation sur 5 noeuds taurus et 1 noeud sagittaire (lyon)
 Commit 2e2b2f97a645ee15f73f6aeed0a18a19ee5bcf2c, 19 janvier
+
 Makefile de **matrix** obtenu avec ~./random_matrix.pl 8 > Makefile~, matrices de 10 par 10.
+
 T_{dis}=4158ms
 
-T1 = 43864ms sur un noeud taurus.
+T_{1} = 43864ms sur un noeud taurus.
+
 On a donc : A = 10.54
+
 E = 0.16
 
 ** Expérimentation sur 5 noeuds taurus et 1 noeud sagittaire (lyon)
@@ -70,10 +74,15 @@ A = 10.40
 
 E = 0.16
 
-T1=467280 sur un noeud taurus.
+T_{1}=467280 sur un noeud taurus.
 
-**Expérimentation sur 10 noeuds taurus (lyon)
+** Expérimentation sur 10 noeuds taurus (lyon)
 
 Commit 70e1c650383a0e671b24f76c7c4519c5157c9365, 20 janvier
+
+T_{dis}=118989
+A=6.76
+E=0.10
+T_{1} = 805416ms
 
 * Fabrication des courbes de performances
