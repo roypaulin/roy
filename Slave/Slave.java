@@ -5,11 +5,7 @@
  */
 
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.rmi.Naming;
 import java.rmi.Remote;
 import java.rmi.registry.Registry;
@@ -17,6 +13,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 
 public class Slave implements Task {
+
 
     public Slave() {
     }
@@ -46,11 +43,13 @@ public class Slave implements Task {
     }
 
     
-     public boolean writeBytes(byte[] b, String filename) {
+     public boolean writeBytes(byte[] data, String filename) {
         
         try {
              FileOutputStream fos = new FileOutputStream(filename);
+             byte[] b = data;
              fos.write(b);
+             fos.flush();
              fos.close();
         }
         catch(FileNotFoundException ex)   {
@@ -61,6 +60,22 @@ public class Slave implements Task {
         }
         
         return true;
+    }
+
+    @Override
+    public byte[] receiveFromSlave(String filename) {
+        byte [] data;
+        File serverpathfile = new File(filename);
+        data=new byte[(int) serverpathfile.length()];
+        FileInputStream in;
+        try {
+            in = new FileInputStream(serverpathfile);
+            in.read(data, 0, data.length);
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data;
     }
 
   

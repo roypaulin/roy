@@ -11,4 +11,5 @@ import java.rmi.RemoteException;
 public interface Task extends Remote {
     String doTask(String command) throws RemoteException;
      boolean writeBytes(byte[] file, String filename) throws RemoteException;
+     byte[] receiveFromSlave(String filename) throws RemoteException;
 }

@@ -36,25 +36,33 @@ public void run() {
         //a new thread for each dependecy
         for (int i = 0; i < prerequisites.size(); i++) {
             // ru= m.getRules().stream().filter(rule->rule.getTarget().equals(prerequisites.get(i))).findAny();
-            ru = m.getRules().get(prerequisites.get(i));
-            // System.out.println("prerequisites.get(i) -> "+prerequisites.get(i));
-            // System.out.println("prerequisites.get(i+1) -> "+prerequisites.get(i+1));
-            // System.out.println("m.getRules() -> "+m.getRules());
-            // System.out.println("object ru->"+ru);
-            //synchronised function for mutual exclusion over the same dipendency
-            if (ru.getState() == 1) {
+            if (m.getRules().containsKey(prerequisites.get(i))) {
+                // Si la dependance est aussi une cible et non un fichier deja present
+                ru = m.getRules().get(prerequisites.get(i));
+                // System.out.println("prerequisites.get(i) -> "+prerequisites.get(i));
+                // System.out.println("prerequisites.get(i+1) -> "+prerequisites.get(i+1));
+                // System.out.println("m.getRules() -> "+m.getRules());
+                // System.out.println("object ru->"+ru);
+                //synchronised function for mutual exclusion over the same dipendency
+                if (ru.getState() == 1) {
 
-                preThreads[i] = new RuleThread(prerequisites.get(i), machines, m, master);
-                preThreads[i].start();
+                    preThreads[i] = new RuleThread(prerequisites.get(i), machines, m, master);
+                    preThreads[i].start();
+                }
+            }
+            else {
+                preThreads[i] = null;
             }
         }
 
         //Synchronisation
         for (RuleThread preThread : preThreads) {
-            try {
-                preThread.join();
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
+            if (preThread != null) {
+                try {
+                    preThread.join();
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
 

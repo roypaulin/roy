@@ -45,15 +45,16 @@ public final class MakefileClass {
                 break;
             
             if(s.length()>0) {
-                // Split the rule to separe the taeget from the rest 
+                // Split the rule to separe the target from the rest
                 String[] parts = s.split("[:]+");
-                
+
+                parts[0] = parts[0].replaceFirst("\\s++$", "");
+                String target = parts[0];
                 // the file has prerequisites
                 if (parts.length > 1) {
                     index++;
                     
                     //System.out.println("got a rule with dependencies:\nrule: " + tokens[0]);
-                    String target = parts[0];
                      currentRule=target;
                     // Split prerequisites
                     String[] prerequisites = parts[1].split("\t|[ ]+");
@@ -73,8 +74,11 @@ public final class MakefileClass {
                 else {
                     // CASE: this line is a command
                     if (s.charAt(0)=='\t') {
+                        while (s.charAt(0) == '\t') {
+                            s = s.substring(1);
+                        }
                         //System.out.println("got command:\n" + s);
-                        addCommand(currentRule, s.substring(1));
+                        addCommand(currentRule, s);
                     }
                     // CASE: this line is a rule with no dependencies at all
                     else {

@@ -31,7 +31,7 @@ public class Machine {
               fis.read(b);
             // fis.close();
          } catch (FileNotFoundException e) {
-                     System.out.println("File Not Found.");
+                     System.out.println("File Not Found, sorry.");
                      e.printStackTrace();
          }
          catch (IOException e1) {
@@ -47,27 +47,25 @@ public class Machine {
     
         return t.writeBytes(fileToBytes(filename), filename);
     }
-    public boolean receiveFromSlave (String filename) throws RemoteException{
-    
-    byte b[] = fileToBytes(filename);
-    
-       if (b==null)
+    public boolean receiveFromSlave (String filename) throws RemoteException {
+        byte b[] = t.receiveFromSlave(filename);
+
+        if (b == null)
             return false;
-        
+
         try {
-             FileOutputStream fos = new FileOutputStream(filename);
-             fos.write(b);
-             fos.close();
-        }
-        catch(IOException ioe)  {
-           
+            FileOutputStream fos = new FileOutputStream(filename);
+            fos.write(b);
+            fos.flush();
+            fos.close();
+        } catch (IOException ioe) {
+
             return false;
         }
-        
+
         return true;
-    
-    
-    
+
+
     }
     
     String doTask(String command) throws RemoteException {
