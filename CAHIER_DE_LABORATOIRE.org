@@ -14,6 +14,25 @@
 
 * Gestion du code
 ** URL du gitlab de l'équipe
+https://gitlab.ensimag.fr/taixv/sysd.git
 * Déployement dans Grid 5000
+Pour compiler le projet, il faut exécuter :
+    javac -d dest `cat src_files`
+
+Après avoir réservé les machines souhaitées, il faut lancer le registre RMI sur toutes les machines (avec la commande `rmiregistry&`).
+Pour lancer la machine maître, exécuter :
+
+    java LaunchMaster ipMaster
+
+Vous pouvez obtenir l'adresse IP de la machine sur laquelle vous êtes connecté avec la commande `hostname -I`.
+Pour lancer un esclave, exécuter :
+
+    java Slave id ipMaster
+Les identifiants des esclaves doivent aller de 0 à nombre_esclave-1.
+Une fois tous les esclaves lancés, vous pouvez lancer le make en lançant :
+
+    java Client ipMaster
+
+
 * Expérimentations
 * Fabrication des courbes de performances
