@@ -78,13 +78,26 @@ T_{1}=467280 sur un noeud taurus.
 
 ** Expérimentation sur 10 noeuds taurus (lyon)
 
+Makefile : premier/Makefile
 Commit 70e1c650383a0e671b24f76c7c4519c5157c9365, 20 janvier
 
 T_{dis}=118989
 
 A=6.76
 
-E=0.10
+E=0.056
+
+T_{1} = 805416ms
+
+** Expérimentation sur 14 noeuds taurus (lyon)
+
+Commit 70e1c650383a0e671b24f76c7c4519c5157c9365, 20 janvier
+
+T_{dis}=90945
+
+A=8.85
+
+E=0.05
 
 T_{1} = 805416ms
 
